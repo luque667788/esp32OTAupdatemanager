@@ -1,0 +1,12 @@
+# Name,     Type, SubType,  Offset,    Size
+nvs,        data, nvs,      0x9000,    0x6000     
+otadata,    data, ota,      0xf000,    0x2000     
+phy_init,   data, phy,      0x11000,   0x1000     
+ota_0,      app,  ota_0,           ,   0x100000   
+ota_1,      app,  ota_1,           ,   0xEE0000   
+
+# 24 KB for NVS
+# 8 KB for OTA Data
+# 4 KB for PHY Init
+# 1 MB for OTA_0
+# ~14.88 MB for OTA_1
