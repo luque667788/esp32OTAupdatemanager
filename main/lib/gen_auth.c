@@ -11,10 +11,9 @@ static int generate_csr_from_rsa_key( char *rsa_pem,  char **csr_out);
 esp_err_t generate_auth_stuff( char **csr_buf,  char **key_buf)
 {
     esp_err_t toReturn;
-    ESP_LOGI(TAG, "pao e bom -1");
     int err = 1;
     err = generate_rsa_key_pem(key_buf);
-    ESP_LOGI(TAG, "pao e bom -2");
+
 
     if (csr_buf && key_buf && err == 0)
     {

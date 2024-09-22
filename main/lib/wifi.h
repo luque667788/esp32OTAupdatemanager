@@ -14,9 +14,13 @@
 #include "esp_wifi.h"
 #include "esp_eap_client.h"
 //TODO! later put ifdef for the config
-#define WIFI_SSID "eduroam"
-#define WIFI_PASS ""
+#define WIFI_SSID "luque"
+#define WIFI_PASS "12345678"
 #define WIFI_MAXIMUM_RETRY 5
+
+#define USEEAP
+
+
 
 #define EAP_ID "ls-246123@rwu.de"
 #define EAP_USERNAME "ls-246123@rwu.de"

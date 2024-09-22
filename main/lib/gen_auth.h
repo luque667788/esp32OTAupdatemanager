@@ -21,6 +21,7 @@
 #ifndef CSR_BUF_SIZE
     #define CSR_BUF_SIZE 2048
 #endif
+
 #ifndef KEY_BUF_SIZE
     #define KEY_BUF_SIZE 2048
 #endif

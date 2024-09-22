@@ -17,6 +17,16 @@
         "wifi.h": "c",
         "common.h": "c",
         "esp_app_format.h": "c",
-        "freertos.h": "c"
+        "freertos.h": "c",
+        "https.h": "c",
+        "stdlib.h": "c",
+        "entropy.h": "c",
+        "debug.h": "c",
+        "sdkconfig.h": "c",
+        "esp_flash_partitions.h": "c",
+        "esp_partition.h": "c",
+        "helpers.h": "c",
+        "esp_crt_bundle.h": "c",
+        "esp_ota_ops.h": "c"
     }
 }

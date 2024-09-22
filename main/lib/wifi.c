@@ -63,7 +63,13 @@ void wifi_init_sta(void)
 
     wifi_config_t wifi_config = {
         .sta = {
+            #ifdef USEEAP
             .ssid = "eduroam",
+            #endif
+            #ifndef USEEAP
+            .ssid = WIFI_SSID,
+            //.password = WIFI_PASS,
+            #endif
 
             /* Authmode threshold resets to WPA2 as default if password matches WPA2 standards (password len => 8).
              * If you want to connect the device to deprecated WEP/WPA networks, Please set the threshold value
@@ -74,11 +80,12 @@ void wifi_init_sta(void)
     };
     ESP_ERROR_CHECK(esp_wifi_set_mode(WIFI_MODE_STA));
     ESP_ERROR_CHECK(esp_wifi_set_config(WIFI_IF_STA, &wifi_config));
-
+    #ifdef USEEAP
     ESP_ERROR_CHECK(esp_eap_client_set_username((uint8_t *)EAP_USERNAME, strlen(EAP_USERNAME)));
     ESP_ERROR_CHECK(esp_eap_client_set_password((uint8_t *)EAP_PASSWORD, strlen(EAP_PASSWORD)));
     ESP_ERROR_CHECK(esp_wifi_sta_enterprise_enable());
-
+    ESP_LOGI(TAG, "EAP is enabled");
+    #endif
     ESP_ERROR_CHECK(esp_wifi_start());
 
     ESP_LOGI(TAG, "wifi_init_sta finished.");
