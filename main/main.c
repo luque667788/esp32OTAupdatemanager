@@ -34,12 +34,12 @@ void app_main(void)
 
     init_nvs();
     wifi_init_sta();
-    print_stack_size();
 
+    print_stack_size();
+    // 
     // for retriving auth data from nvs we need to allocate memory for the buffers first
     char *cert_buf = malloc(CLIENT_CERT_BUF_SIZE);
     char *key_buf = malloc(KEY_BUF_SIZE);
-
 
     int ret = get_auth_nvs(&key_buf, KEY_BUF_SIZE, &cert_buf, CSR_BUF_SIZE);
     if (ret == 0)
@@ -54,8 +54,7 @@ void app_main(void)
         // Currently, we have the same behavior for both cases: printing the error, freeing the allocated memory, generating new keys, and storing them in the NVS.
         ESP_LOGE(TAG, "Failed to retrieve cert and priv key from NVS");
 
-
-        //because it failed we can delete the buffers and generate new ones(the generate_auth_stuff function will allocate memory for the buffers for you this next time)
+        // because it failed we can delete the buffers and generate new ones(the generate_auth_stuff function will allocate memory for the buffers for you this next time)
         free(cert_buf);
         free(key_buf);
 
@@ -68,7 +67,6 @@ void app_main(void)
             // unrecoverable error, restart the esp32
             task_fatal_error();
         }
-
 
         ESP_LOGI(TAG, "Sucessfully generated csr and priv key key!");
 
@@ -95,8 +93,10 @@ void app_main(void)
     We are going now to compare the version of the current firmware with the version of the firmware on the server.
     In this case we are just updating if it is a newer version on the server. This means if you rollback a version on the server the esp32 wont update to the older version.
     */
-   
-    char *version_buf1 = malloc(VERSION_BUF_SIZE);
+
+    char *version_buf2 = NULL;
+
+    char *version_buf1 = calloc(1, VERSION_BUF_SIZE);
     int found_version_flag = get_version_from_nvs(&version_buf1, VERSION_BUF_SIZE);
 
     int ver_comp_result = -1; // this means if we dont find any version on nvs or get an error retrieving it fomr nvs we will update the ota by default
@@ -104,7 +104,6 @@ void app_main(void)
     if (found_version_flag == 0)
     {
         ESP_LOGI(TAG, "Version in NVS (current version): %s", version_buf1);
-        char *version_buf2 = NULL;
         err = get_version_api(cert_buf, key_buf, &version_buf2, &url_buf);
         if (err != ESP_OK)
         {
@@ -116,15 +115,13 @@ void app_main(void)
         ESP_LOGI(TAG, "Version: %s", version_buf2);
         ESP_LOGI(TAG, "URL: %s", url_buf);
         ver_comp_result = compare_versions(version_buf1, version_buf2); // will return -1 if current version is older then server version
-        if(ver_comp_result == 0 || ver_comp_result == 1){
+        if (ver_comp_result == 0 || ver_comp_result == 1)
+        {
             ESP_LOGI(TAG, "Current version is the same or newer then the server version-> no need to update ota!");
         }
-        free(version_buf2);
-
     } // first boot probably we dont have the version in the nvs-> still need to get the url from server
     else if (found_version_flag == -1)
     {
-        char *version_buf2 = malloc(VERSION_BUF_SIZE);
 
         err = get_version_api(cert_buf, key_buf, &version_buf2, &url_buf);
         if (err != ESP_OK)
@@ -140,12 +137,13 @@ void app_main(void)
 
     ota_config_t ota_config;
     ota_begin(&ota_config);
-    if (ver_comp_result == -1 && url_buf != NULL)
+    if (ver_comp_result == -1 && url_buf != NULL && version_buf2 != NULL)
     {
-        err = set_version_in_nvs(version_buf1);
+        ESP_LOGI(TAG, "settign version in nvs %s", version_buf2);
+        err = set_version_in_nvs(version_buf2);
         if (err != ESP_OK)
         {
-            ESP_LOGE(TAG, "Failed to store version in NVS,%s" , esp_err_to_name(err));
+            ESP_LOGE(TAG, "Failed to store version in NVS,%s", esp_err_to_name(err));
             ESP_LOGW(TAG, "Will continue with the update process anyways");
         }
         else
@@ -163,6 +161,8 @@ void app_main(void)
         }
     }
     free(version_buf1);
+    free(version_buf2);
+
     free(url_buf);
     free(cert_buf);
     free(key_buf);

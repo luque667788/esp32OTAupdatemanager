@@ -145,7 +145,6 @@ esp_err_t get_version_api(char* cert_buf, char* key_buf, char** version_buf, cha
             cJSON *root = cJSON_Parse(local_response_buffer);
             if (root != NULL) {
                 char *json_string = cJSON_Print(root);
-                ESP_LOGI(TAG, "Parsed JSON response: %s", json_string);
                 
                 // Extract a version field
                 cJSON *result = cJSON_GetObjectItemCaseSensitive(root, "version");

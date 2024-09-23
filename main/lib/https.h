@@ -58,7 +58,7 @@
 #endif
 
 #ifndef DEVICE_ID
-#define DEVICE_ID "pi3hlorr0y9o029"
+#define DEVICE_ID "lq5jbbj9srauod4"
 #endif
 
 
