@@ -155,7 +155,6 @@ esp_err_t get_version_api(char* cert_buf, char* key_buf, char** version_buf, cha
                         if (*version_buf != NULL) {
                             strncpy(*version_buf, result->valuestring, version_len);
                             (*version_buf)[version_len] = '\0';
-                            ESP_LOGI(TAG, "Version: %s", *version_buf);
                         } else {
                             ESP_LOGE(TAG, "Failed to allocate memory for version buffer");
                             err = ESP_ERR_NO_MEM;
@@ -177,7 +176,6 @@ esp_err_t get_version_api(char* cert_buf, char* key_buf, char** version_buf, cha
                         if (*url_buf != NULL) {
                             strncpy(*url_buf, result2->valuestring, url_len);
                             (*url_buf)[url_len] = '\0';
-                            ESP_LOGI(TAG, "URL: %s", *url_buf);
                         } else {
                             ESP_LOGE(TAG, "Failed to allocate memory for url buffer");
                             err = ESP_ERR_NO_MEM;

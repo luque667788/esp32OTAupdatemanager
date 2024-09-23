@@ -111,8 +111,8 @@ void app_main(void)
             // unrecoverable error, restart the esp32
             task_fatal_error();
         }
-        ESP_LOGI(TAG, "successfully got version from API");
-        ESP_LOGI(TAG, "Version: %s", version_buf2);
+        ESP_LOGI(TAG, "successfully got data from API");
+        ESP_LOGI(TAG, "(server)Version: %s", version_buf2);
         ESP_LOGI(TAG, "URL: %s", url_buf);
         ver_comp_result = compare_versions(version_buf1, version_buf2); // will return -1 if current version is older then server version
         if (ver_comp_result == 0 || ver_comp_result == 1)
@@ -130,8 +130,8 @@ void app_main(void)
             // unrecoverable error, restart the esp32
             task_fatal_error();
         }
-        ESP_LOGI(TAG, "successfully got version from API");
-        ESP_LOGI(TAG, "Version: %s", version_buf2);
+        ESP_LOGI(TAG, "successfully got data from API");
+        ESP_LOGI(TAG, "(server)Version: %s", version_buf2);
         ESP_LOGI(TAG, "URL: %s", url_buf);
     }
 
