@@ -12,8 +12,12 @@
 #include "helpers.h"
 
 #include "common.h"
-
+// Function to initialize the NVS
+// This function should be called before any other NVS function or wifi
 void init_nvs(void);
+
+
+
 // Get the authentication data (priv key and cert) from the NVS
 // Returns 0 if success, -1 if not found, 1 if error
 // The key_buf and cert_buf should be pre-allocated before calling this function

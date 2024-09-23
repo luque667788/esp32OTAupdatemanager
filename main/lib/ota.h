@@ -19,7 +19,7 @@
 
 #define OTA_BUFFSIZE 1024
 #define OTA_RECV_TIMEOUT 3000
-//struct that holds ota config data
+//struct that holds ota config parameters
 typedef struct ota_config_t
 {
     esp_ota_handle_t update_handle;
@@ -33,8 +33,12 @@ typedef struct ota_config_t
 void ota_begin(ota_config_t *ota_config);
 
 // sets the next boot to be on the application partition
+// frees the ota_config_t.  ota_config_t struct needs to be initialized
 esp_err_t ota_end(ota_config_t *ota_config);
 
+
+// Function to download and update the firmware
+// needs a allocated cert_buf,key_buf and url_buf and ota_config_t struct initialized
 esp_err_t ota_update(char* cert_buf,char* key_buf,char* url_buf,ota_config_t *ota_config);
 
 

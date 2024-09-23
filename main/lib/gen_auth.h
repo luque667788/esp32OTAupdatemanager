@@ -17,7 +17,7 @@
 #include "common.h"
 
 
-// default values
+// default values - > you shouldnt need to change this ones
 #ifndef CSR_BUF_SIZE
     #define CSR_BUF_SIZE 2048
 #endif
@@ -35,12 +35,12 @@ esp_err_t generate_auth_stuff( char **csr_buf,  char **key_buf);
 
 
 /*
-| PRIVATE HELPER FUNCTIONS | -> just for readiblity porpuses I included then as a comment in the header file
+| PRIVATE HELPER FUNCTIONS | -> just for readability purposes I included them as comments in the header file
 
-// Function to generate RSA key and convert to PEM format
+// Function to generate RSA key and convert it to PEM format
 static int generate_rsa_key_pem(char **pem_out);
 
 // Function to generate CSR from an RSA private key in PEM format
-static int generate_csr_from_rsa_key( char *rsa_pem,  char **csr_out);
+static int generate_csr_from_rsa_key(char *rsa_pem, char **csr_out);
 */
 #endif 

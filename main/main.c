@@ -28,15 +28,19 @@ void app_main(void)
     if (err != ESP_OK)
     {
         ESP_LOGE(TAG, "esp_ota_mark_app_valid_cancel_rollback failed (%s)!", esp_err_to_name(err));
-        // u can make it can either restart esp or do some other things like warn the server if wanted
+        // you can make it can either restart esp or do some other things like warn the server if wanted
         // cause this error indicates there something corrupeted or worng with the ota partitions ota_data
     }
 
     init_nvs();
     wifi_init_sta();
     print_stack_size();
+
+    // for retriving auth data from nvs we need to allocate memory for the buffers first
     char *cert_buf = malloc(CLIENT_CERT_BUF_SIZE);
     char *key_buf = malloc(KEY_BUF_SIZE);
+
+
     int ret = get_auth_nvs(&key_buf, KEY_BUF_SIZE, &cert_buf, CSR_BUF_SIZE);
     if (ret == 0)
     {
@@ -44,11 +48,14 @@ void app_main(void)
     }
     else
     {
-        // TODO! if wanted we can have different behavior if the data is not found or if there is an error in the nvs
-        // for example, if data was not found we create the data and if there is an error we just restart the esp32 and try again
-        //  depends on the desing case
-        //  for now we have the same behavior for both cases: print the error, free the allocated memory, try to generate new keys and store them in the nvs
+        // If desired, we can implement different behaviors for when the data is not found or when there is an error in the NVS.
+        // For example, if the data is not found, we can create the data, and if there is an error, we can simply restart the ESP32 and try again.
+        // The specific behavior depends on the design case.
+        // Currently, we have the same behavior for both cases: printing the error, freeing the allocated memory, generating new keys, and storing them in the NVS.
         ESP_LOGE(TAG, "Failed to retrieve cert and priv key from NVS");
+
+
+        //because it failed we can delete the buffers and generate new ones(the generate_auth_stuff function will allocate memory for the buffers for you this next time)
         free(cert_buf);
         free(key_buf);
 
@@ -61,7 +68,8 @@ void app_main(void)
             // unrecoverable error, restart the esp32
             task_fatal_error();
         }
-        // TODO! remove print certificate and key
+
+
         ESP_LOGI(TAG, "Sucessfully generated csr and priv key key!");
 
         err = send_csr(csr_buf, &cert_buf);
@@ -82,6 +90,12 @@ void app_main(void)
         }
         ESP_LOGI(TAG, "Successfully stored cert and priv key in NVS");
     }
+
+    /*
+    We are going now to compare the version of the current firmware with the version of the firmware on the server.
+    In this case we are just updating if it is a newer version on the server. This means if you rollback a version on the server the esp32 wont update to the older version.
+    */
+   
     char *version_buf1 = malloc(VERSION_BUF_SIZE);
     int found_version_flag = get_version_from_nvs(&version_buf1, VERSION_BUF_SIZE);
 

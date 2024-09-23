@@ -62,8 +62,12 @@
 #endif
 
 
-
+// Function to send a CSR to the server and receive a certificate
+// The certificate is stored in cert_buf that will be allocated on the HEAP for you in the function
+// Returns ESP_OK if successful, ESP_FAIL if not
 esp_err_t send_csr(const char *csr, char **cert_buf);
+
+//http handler function -> defined as esp32 http example
 esp_err_t _http_event_handler(esp_http_client_event_t *evt);
 
 // Function to get the version from the server

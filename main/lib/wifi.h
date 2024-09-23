@@ -13,21 +13,29 @@
 #include "errno.h"
 #include "esp_wifi.h"
 #include "esp_eap_client.h"
-//TODO! later put ifdef for the config
+#include "common.h"
+
+
+
+//for normal wifi networks
 #define WIFI_SSID "luque"
 #define WIFI_PASS "12345678"
 #define WIFI_MAXIMUM_RETRY 5
 
+
+
+
+// if using enterprise wifi network-> (for example eduroam) uncomment the following lines
 #define USEEAP
-
-
-
+#define EAP_SSID
 #define EAP_ID "ls-246123@rwu.de"
 #define EAP_USERNAME "ls-246123@rwu.de"
 #define EAP_PASSWORD "Zvv5N5g6"
 
-#include "common.h"
 
+
+// Function to initialize the wifi and sets to station mode
+// This function should be called before any other wifi function
 void wifi_init_sta(void);
 
 static void event_handler(void *arg, esp_event_base_t event_base,

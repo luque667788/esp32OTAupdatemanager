@@ -13,6 +13,7 @@
 #include "esp_ota_ops.h"
 #include "esp_app_format.h"
 
+// This is just for debugging purposes
 static void print_stack_size()
 {
     ESP_LOGI(TAG, "Available stack size: %d bytes", uxTaskGetStackHighWaterMark(NULL) * sizeof(StackType_t));

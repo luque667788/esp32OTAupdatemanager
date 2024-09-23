@@ -33,7 +33,6 @@ esp_err_t generate_auth_stuff( char **csr_buf,  char **key_buf)
     else
     {
         ESP_LOGE(TAG, "Failed to generate private key");
-        // TODO! handle error better maybe
         toReturn = ESP_FAIL;
     }
     return toReturn;

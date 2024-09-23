@@ -24,7 +24,6 @@ void ota_begin(ota_config_t *ota_config){
         //unrecoverable error, restart the esp32
         task_fatal_error();
     }
-    //TODO!think about that 
     if (ota_config->update_partition == ota_config->running_partition)
     {
         ESP_LOGW(TAG, "Running partition is the same as the update partition probably a bug in previous versons of application bin");

@@ -212,7 +212,6 @@ cleanup:
 }
 
 
-
 esp_err_t send_csr(const char *csr, char **cert_buf)
 {
     char *local_response_buffer = (char *)calloc(MAX_HTTP_OUTPUT_BUFFER + 1, sizeof(char));
