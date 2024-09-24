@@ -1,4 +1,4 @@
-#OTA Updater Project
+# OTA Updater Project  
 This project implements a robust Over-The-Air (OTA) update mechanism for ESP32 using the ESP-IDF framework. The primary objective is to ensure that the application binaries remain independent and unaware of the update system. The solution encompasses essential functionalities such as Wi-Fi initialization, NVS (Non-Volatile Storage) management, OTA updates, and secure communication with a server.
 
 To accommodate different flash sizes, the partition scheme can be easily adjusted by updating the ota_1 partition (the application partition) accordingly.
