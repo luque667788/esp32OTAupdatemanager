@@ -3,13 +3,15 @@ This project implements an Over-The-Air (OTA) update mechanism for ESP32 using t
 
 
 ## Attention Points and Warnings
-To accommodate different flash sizes, the partition scheme can be easily adjusted by updating the ota_1 partition (the application partition) accordingly.
+To accommodate different flash sizes, the partition scheme can be easily adjusted by updating the ota_1 partition (the application partition) accordingly(currently it is configured for 8MB). Remember to check if the size of the application binary uploaded in the server will fit in the ota_1 partition.
 
 As already discussed before in the chat, for the project to work properly the application bin cannot call the esp_ota_mark_app_valid_cancel_rollback() function.
 
 Another consideration is modifying the NVS "mtls_auth" namespace from the uploaded application may result in improper functionality of the code.
 
 Please before running or testing the code make sure to change the wifi credentials to yours and also change the deviceId to a newly generated one from the server.
+
+
 
 ## Main Functionalities
 - Wi-Fi Initialization: Establishes a connection to a specified Wi-Fi network.
@@ -77,6 +79,7 @@ sdkconfig.old
 ### Configuration
 - Wi-Fi Credentials: Set up your Wi-Fi credentials in the `main/lib/wifi.h` file.
 - URLs: Configure the server URLs in the `main/lib/https.h` file.
+- DeviceId: Configure the deviceId in the `main/lib/https.h` file.
 
 - Menuconfig: Access `idf.py menuconfig` and ensure that the "Enable rollback" option is already enabled in the bootloader options.
 
@@ -93,5 +96,5 @@ idf.py flash monitor //(requires the ESP32 to be connected via USB to the comput
 The project incorporates robust error-handling mechanisms to ensure system stability. In the event of a critical error, the system will automatically restart to attempt recovery. These error-handling mechanisms can be easily customized as most functionalities are abstracted into separate files.
 
 ### Additional Notes
-- The Wi-Fi keys, URLs, and deviceId are currently hardcoded for development purposes. If necessary, these can be stored in the NVS.
+- The Wi-Fi keys, URLs, and deviceId are currently hard-coded for development purposes. If necessary, these can be stored in the NVS.
 - If you have any questions or suggestions for alternative approaches for specific points, please don't hesitate to reach out.

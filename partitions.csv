@@ -4,10 +4,11 @@ otadata,    data, ota,      0xf000,    0x2000
 phy_init,   data, phy,      0x11000,   0x1000     
 ota_0,      app,  ota_0,           ,   2M
 # the minimun size should be 2 m for the ota_0  
-ota_1,      app,  ota_1,           ,   13M  
+ota_1,      app,  ota_1,           ,   5M  
 
+# Setup for 8MB flash
 # 24 KB for NVS
 # 8 KB for OTA Data
 # 4 KB for PHY Init
-# 1 MB for OTA_0
-# ~14.88 MB for OTA_1
+# 2 MB for OTA_0
+# 5 MB for OTA_1

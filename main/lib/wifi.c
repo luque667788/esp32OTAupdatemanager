@@ -64,11 +64,11 @@ void wifi_init_sta(void)
     wifi_config_t wifi_config = {
         .sta = {
             #ifdef USEEAP
-            .ssid = "eduroam",
+            .ssid = EAP_SSID,
             #endif
             #ifndef USEEAP
             .ssid = WIFI_SSID,
-            //.password = WIFI_PASS,
+            .password = WIFI_PASS,
             #endif
 
             /* Authmode threshold resets to WPA2 as default if password matches WPA2 standards (password len => 8).

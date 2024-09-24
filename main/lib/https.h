@@ -33,13 +33,13 @@
 
 
 
-#ifndef GET_CRT_URL
+/**** CONFIGURATION ****/
 #define GET_CRT_URL "https://taylered.io/api/device/register"
-#endif
 
-#ifndef GET_VERSION_URL
 #define GET_VERSION_URL "https://mtls.taylered.io/api/device/pull/update"
-#endif
+
+#define DEVICE_ID "lq5jbbj9srauod4"
+/****               ****/
 
 #define MAX_HTTP_RECV_BUFFER 512
 #define MAX_HTTP_OUTPUT_BUFFER 2048
@@ -57,9 +57,7 @@
     #define VERSION_BUF_SIZE 100
 #endif
 
-#ifndef DEVICE_ID
-#define DEVICE_ID "lq5jbbj9srauod4"
-#endif
+
 
 
 // Function to send a CSR to the server and receive a certificate

@@ -16,10 +16,11 @@
 #include "common.h"
 
 
+/**** CONFIGURATION ****/
 
 //for normal wifi networks
-#define WIFI_SSID "luque"
-#define WIFI_PASS "12345678"
+#define WIFI_SSID "yourwifissid"
+#define WIFI_PASS "yourwifipassword"
 #define WIFI_MAXIMUM_RETRY 5
 
 
@@ -27,10 +28,13 @@
 
 // if using enterprise wifi network-> (for example eduroam) uncomment the following lines
 #define USEEAP
-#define EAP_SSID
+#define EAP_SSID "eduroam"
 #define EAP_ID "ls-246123@rwu.de"
 #define EAP_USERNAME "ls-246123@rwu.de"
 #define EAP_PASSWORD "Zvv5N5g6"
+
+
+/****               ****/
 
 
 
