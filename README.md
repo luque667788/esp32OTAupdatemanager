@@ -1,40 +1,44 @@
 # OTA Updater Project  
-This project implements a robust Over-The-Air (OTA) update mechanism for ESP32 using the ESP-IDF framework. The primary objective is to ensure that the application binaries remain independent and unaware of the update system. The solution encompasses essential functionalities such as Wi-Fi initialization, NVS (Non-Volatile Storage) management, OTA updates, and secure communication with a server.
+This project implements an Over-The-Air (OTA) update mechanism for ESP32 using the ESP-IDF framework. The main requirement is to ensure that the application binaries remain independent and unaware of the update system. This includes all the essential functionalities such as Wi-Fi initialization, NVS (Non-Volatile Storage) management, OTA updates, and secure communication mtls with a server.
 
+
+## Attention Points and Warnings
 To accommodate different flash sizes, the partition scheme can be easily adjusted by updating the ota_1 partition (the application partition) accordingly.
 
-While the code is highly reliable, it's worth noting a potential issue related to the esp_ota_mark_app_valid_cancel_rollback() function. Although unlikely, if an uploaded application calls this function, if the application calls these specific function it will interfere with the update process by bypassing the update partition and booting directly to the application partition without checking for updates. However, typical applications are unlikely to encounter this scenario.
+As already discussed before in the chat, for the project to work properly the application bin cannot call the esp_ota_mark_app_valid_cancel_rollback() function.
 
-Another consideration is the modification of the NVS "mtls_auth" namespace by the uploaded application. Deleting private key certificates or critical data within this namespace may result in improper application functionality.
+Another consideration is modifying the NVS "mtls_auth" namespace from the uploaded application may result in improper functionality of the code.
+
+Please before running or testing the code make sure to change the wifi credentials to yours and also change the deviceId to a newly generated one from the server.
 
 ## Main Functionalities
 - Wi-Fi Initialization: Establishes a connection to a specified Wi-Fi network.
 - NVS Management: Facilitates the storage and retrieval of certificates, keys, and firmware versions.
 - OTA Updates: Downloads and installs firmware updates from a server.
-- Secure Communication: Ensures secure communication with the server using HTTPS.
+- Secure Communication: Ensures secure communication with the server using mtls HTTPS.
 
 ## Project Structure
 ```
 .devcontainer/
-    devcontainer.json
-    Dockerfile
+ devcontainer.json
+ Dockerfile
 .gitignore
 .vscode/
-    c_cpp_properties.json
-    launch.json
-    settings.json
-    tasks.json
+ c_cpp_properties.json
+ launch.json
+ settings.json
+ tasks.json
 build/
-    ...
+ ...
 CMakeLists.txt
 main/
-    CMakeLists.txt
-    main.c
-    lib/
-        helpers.h
-        ota.h
-        wifi.h
-        ...
+ CMakeLists.txt
+ main.c
+ lib/
+ helpers.h
+ ota.h
+ wifi.h
+ ...
 partitions.csv
 README.md
 sdkconfig
@@ -80,14 +84,14 @@ sdkconfig.old
 1. Open a terminal and navigate to the project directory.
 2. Execute the following commands to build and flash the project:
 ```
-idf.py idf.py set-target <yourtargethere>
+idf.py idf.py set-target <yourtargethere> //for example: esp32s3
 idf.py build
 idf.py flash monitor //(requires the ESP32 to be connected via USB to the computer)
 ```
 
 ### Error Handling
-The project incorporates robust error handling mechanisms to ensure system stability. In the event of a critical error, the system will automatically restart to attempt recovery. These error handling mechanisms can be easily customized as most functionalities are abstracted into separate files.
+The project incorporates robust error-handling mechanisms to ensure system stability. In the event of a critical error, the system will automatically restart to attempt recovery. These error-handling mechanisms can be easily customized as most functionalities are abstracted into separate files.
 
 ### Additional Notes
-- The Wi-Fi keys and URLs are currently hardcoded for development purposes. If necessary, these can be stored in the NVS.
-- If you have any questions or suggestions for alternative approaches, please don't hesitate to reach out.
+- The Wi-Fi keys, URLs, and deviceId are currently hardcoded for development purposes. If necessary, these can be stored in the NVS.
+- If you have any questions or suggestions for alternative approaches for specific points, please don't hesitate to reach out.
