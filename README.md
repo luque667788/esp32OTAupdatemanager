@@ -98,3 +98,6 @@ The project incorporates robust error-handling mechanisms to ensure system stabi
 ### Additional Notes
 - The Wi-Fi keys, URLs, and deviceId are currently hard-coded for development purposes. If necessary, these can be stored in the NVS.
 - If you have any questions or suggestions for alternative approaches for specific points, please don't hesitate to reach out.
+
+## Contact 
+Email: luquemendonca@gmail.com
