@@ -11,6 +11,8 @@ Another consideration is modifying the NVS "mtls_auth" namespace from the upload
 
 Please before running or testing the code make sure to change the wifi credentials to yours and also change the deviceId to a newly generated one from the server.
 
+Make sure to check out the configuration section of this README before running the project.
+
 
 
 ## Main Functionalities
@@ -82,6 +84,8 @@ sdkconfig.old
 - DeviceId: Configure the deviceId in the `main/lib/https.h` file.
 
 - Menuconfig: Access `idf.py menuconfig` and ensure that the "Enable rollback" option is already enabled in the bootloader options.
+- Menuconfig: Ensure your partition settings in `idf.py` are configured for "Custom partition table CSV" (make sure to also configure the size of the ota_1 partition according to your specific resources of the esp32 flash).
+- Menuconfig: Navigate to `Component config -> ESP system settings -> Main task stack size` and set it to 7170. If your specific ESP32 version does not support this value, you may set it to a lower value, such as approximately 5000.
 
 ### Build and Flash
 1. Open a terminal and navigate to the project directory.

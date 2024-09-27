@@ -2,13 +2,20 @@
 nvs,        data, nvs,      0x9000,    0x6000     
 otadata,    data, ota,      0xf000,    0x2000     
 phy_init,   data, phy,      0x11000,   0x1000     
-ota_0,      app,  ota_0,           ,   2M
+ota_0,      app,  ota_0,           ,   0x130000
 # the minimun size should be 2 m for the ota_0  
-ota_1,      app,  ota_1,           ,   5M  
+ota_1,      app,  ota_1,           ,   0x150000  
 
 # Setup for 8MB flash
 # 24 KB for NVS
 # 8 KB for OTA Data
 # 4 KB for PHY Init
-# 2 MB for OTA_0
-# 5 MB for OTA_1
+# 2M   (MB) for OTA_0
+# 5M   (MB) for OTA_1
+
+# Setup for 4MB flash
+# 24 KB for NVS
+# 8 KB for OTA Data
+# 4 KB for PHY Init
+# 0x130000 for OTA_0
+# 0x150000 for OTA_1 # if you want bigger application binaries you can try to tweak the size of the ota_0 or buy a esp32 with more flash
