@@ -3,17 +3,19 @@ This project implements an Over-The-Air (OTA) update mechanism for ESP32 using t
 
 
 ## Attention Points and Warnings
-To accommodate different flash sizes, the partition scheme can be easily adjusted by updating the ota_1 partition (the application partition) accordingly(currently it is configured for 8MB). Remember to check if the size of the application binary uploaded in the server will fit in the ota_1 partition.
+- To accommodate different flash sizes, the partition scheme can be easily adjusted by updating the ota_1 partition (the application partition) accordingly(currently it is configured for 8MB). Remember to check if the size of the application binary uploaded in the server will fit in the ota_1 partition.
 
-As already discussed before in the chat, for the project to work properly the application bin cannot call the esp_ota_mark_app_valid_cancel_rollback() function.
+- As already discussed before in the chat, for the project to work properly the application bin cannot call the esp_ota_mark_app_valid_cancel_rollback() function.
 
-Another consideration is modifying the NVS "mtls_auth" namespace from the uploaded application may result in improper functionality of the code.
+- Another consideration is modifying the NVS "mtls_auth" namespace from the uploaded application may result in improper functionality of the code.
 
-Please before running or testing the code make sure to change the wifi credentials to yours and also change the deviceId to a newly generated one from the server.
+- Please before running or testing the code make sure to change the wifi credentials to yours and also change the deviceId to a newly generated one from the server.
 
-Make sure to check out the configuration section of this README before running the project.
+- Make sure to check out the configuration section of this README before running the project.
 
-The Wi-Fi credentials and device ID are stored in the NVS during the first boot, using the values from the `envdata` folder. On subsequent boots, the program retrieves these credentials and device ID from the NVS. If a third-party program modifies the `device_creds` namespace in the NVS, changing the `ssid`, `pass`, or `deviceid` fields, the program will use the updated values from the NVS.
+- The Wi-Fi credentials and device ID are stored in the NVS during the first boot, using the values from the `envdata` folder. On subsequent boots, the program retrieves these credentials and device ID from the NVS. If a third-party program modifies the `device_creds` namespace in the NVS, changing the `ssid`, `pass`, or `deviceid` fields, the program will use the updated values from the NVS.
+
+- If you are not using the same exact project as me, and just copying and pasting the code files, remember to make sure that the CMake file is equal as in this project also.
 
 
 
@@ -88,7 +90,7 @@ sdkconfig.old
 - Menuconfig: Access `idf.py menuconfig` and ensure that the "Enable rollback" option is already enabled in the bootloader options.
 - Menuconfig: Ensure your partition settings in `idf.py` are configured for "Custom partition table CSV" (make sure to also configure the size of the ota_1 partition according to your specific resources of the esp32 flash).
 - Menuconfig: Navigate to `Component config -> ESP system settings -> Main task stack size` and set it to 7170. If your specific ESP32 version does not support this value, you may set it to a lower value, such as approximately 5000.
-- If you are not using the same exact project as me, and just copying and pasting the code files, remember to make sure that the CMake file is equal as in this project also.
+
 
 ### Build and Flash
 1. Open a terminal and navigate to the project directory.
