@@ -112,5 +112,5 @@ The project incorporates robust error-handling mechanisms to ensure system stabi
 - If you have any questions or suggestions for alternative approaches for specific points, please don't hesitate to reach out.
 
 ## Contact 
-Email: luquemendonca@gmail.com
+Email: luquemendonca@gmail.com  
 Open for werkstudent and internships opportunities. 
