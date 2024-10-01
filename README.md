@@ -39,6 +39,10 @@ This project implements an Over-The-Air (OTA) update mechanism for ESP32 using t
 build/
  ...
 CMakeLists.txt
+envdata/
+ wifissid
+ wifipass
+ deviceid
 main/
  CMakeLists.txt
  main.c
