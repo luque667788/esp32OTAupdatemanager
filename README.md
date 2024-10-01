@@ -81,7 +81,7 @@ sdkconfig.old
 - Ensure that ESP-IDF is installed on your system. Follow the ESP-IDF setup guide for installation instructions.
 
 ### Configuration
-- Wi-Fi Credentials: Set up your Wi-Fi credentials in the `envdata` folder in their the respective ssid and pass files.
+- Wi-Fi Credentials: Set up your Wi-Fi credentials in the `envdata` folder in their the respective `wifissid` and `wifipass` files.
 - URLs: Configure the server URLs in the `main/lib/https.h` file.
 - DeviceId: Configure the deviceId in the `envdata` folder in the `deviceid` file.
 

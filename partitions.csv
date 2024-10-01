@@ -18,4 +18,4 @@ ota_1,      app,  ota_1,           ,   0x150000
 # 8 KB for OTA Data
 # 4 KB for PHY Init
 # 0x130000 for OTA_0
-# 0x150000 for OTA_1 # if you want bigger application binaries you can try to tweak the size of the ota_0 or buy a esp32 with more flash
+# 0x150000 for OTA_1 # if you want bigger application binaries you can try to tweak the size of the ota_1 and other partitions or buy a esp32 with more flash or external flash
