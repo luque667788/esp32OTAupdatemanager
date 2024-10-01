@@ -113,4 +113,4 @@ The project incorporates robust error-handling mechanisms to ensure system stabi
 
 ## Contact 
 Email: luquemendonca@gmail.com  
-Open for werkstudent and internships opportunities. 
+Open for werkstudent and internship opportunities. 
