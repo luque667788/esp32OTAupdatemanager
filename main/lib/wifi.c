@@ -36,7 +36,7 @@ static void event_handler(void *arg, esp_event_base_t event_base,
 }
 
 
-void wifi_init_sta(void)
+void wifi_init_sta(char* wifissid_start, char* wifipass_start)
 {
     s_wifi_event_group = xEventGroupCreate();
 
@@ -66,10 +66,6 @@ void wifi_init_sta(void)
             #ifdef USEEAP
             .ssid = EAP_SSID,
             #endif
-            #ifndef USEEAP
-            .ssid = WIFI_SSID,
-            .password = WIFI_PASS,
-            #endif
 
             /* Authmode threshold resets to WPA2 as default if password matches WPA2 standards (password len => 8).
              * If you want to connect the device to deprecated WEP/WPA networks, Please set the threshold value
@@ -78,6 +74,11 @@ void wifi_init_sta(void)
              */
         },
     };
+
+    #ifndef USEEAP
+    memcpy(wifi_config.sta.ssid, wifissid_start, WIFI_KEY_SIZE);
+    memcpy(wifi_config.sta.password, wifipass_start, WIFI_KEY_SIZE);
+    #endif
     ESP_ERROR_CHECK(esp_wifi_set_mode(WIFI_MODE_STA));
     ESP_ERROR_CHECK(esp_wifi_set_config(WIFI_IF_STA, &wifi_config));
     #ifdef USEEAP
@@ -103,12 +104,12 @@ void wifi_init_sta(void)
     if (bits & WIFI_CONNECTED_BIT)
     {
         ESP_LOGI(TAG, "connected to ap SSID:%s password:%s",
-                 WIFI_SSID, WIFI_PASS);
+                 (char*)wifissid_start, (char*)wifipass_start);
     }
     else if (bits & WIFI_FAIL_BIT)
     {
         ESP_LOGI(TAG, "Failed to connect to SSID:%s, password:%s",
-                 WIFI_SSID, WIFI_PASS);
+                 (char*)wifissid_start, (char*)wifipass_start);
     }
     else
     {

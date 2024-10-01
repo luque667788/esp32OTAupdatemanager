@@ -231,7 +231,7 @@ cleanup:
     return err;
 }
 
-esp_err_t send_csr(const char *csr, char **cert_buf)
+esp_err_t send_csr(const char *csr, char **cert_buf, char *deviceid_start)
 {
     char *local_response_buffer = (char *)calloc(MAX_HTTP_OUTPUT_BUFFER + 1, sizeof(char));
     if (local_response_buffer == NULL)
@@ -248,7 +248,7 @@ esp_err_t send_csr(const char *csr, char **cert_buf)
     };
     esp_http_client_handle_t client = esp_http_client_init(&config);
     cJSON *root = cJSON_CreateObject();
-    cJSON_AddStringToObject(root, "deviceId", DEVICE_ID);
+    cJSON_AddStringToObject(root, "deviceId", (char*)deviceid_start);
     cJSON_AddStringToObject(root, "csr", csr);
     const char *post_data = cJSON_PrintUnformatted(root);
     cJSON_Delete(root);

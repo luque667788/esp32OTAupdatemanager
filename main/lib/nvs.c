@@ -18,6 +18,111 @@ void init_nvs(void)
 }
 
 
+int get_wifi_id_nvs(char **ssid_buf, size_t ssid_buf_len, char **pass_buf, size_t pass_buf_len, char **device_id_buf, size_t device_id_buf_len)
+{
+    int toReturn = 1; // 0 if success, -1 if not found, 1 if error
+    nvs_handle_t my_handle;
+    esp_err_t err = nvs_open("device_creds", NVS_READWRITE, &my_handle);
+    if (err != ESP_OK)
+    {
+        ESP_LOGE(TAG, "Error (%s) opening NVS handle!\n", esp_err_to_name(err));
+        goto cleanup;
+    }
+
+    // Read the SSID from NVS
+    size_t required_size;
+    err = nvs_get_str(my_handle, "ssid", NULL, &required_size);
+    if (err == ESP_OK && required_size <= ssid_buf_len)
+    {
+        err = nvs_get_str(my_handle, "ssid", *ssid_buf, &required_size);
+        if (err == ESP_OK)
+        {
+            ESP_LOGI(TAG, "SSID retrieved from NVS");
+            toReturn = 0;
+        }
+        else
+        {
+            ESP_LOGE(TAG, "Failed to read SSID: %s", esp_err_to_name(err));
+            goto cleanup;
+        }
+    }
+    else if (err == ESP_ERR_NVS_NOT_FOUND)
+    {
+        ESP_LOGW(TAG, "SSID not found in NVS");
+        toReturn = -1;
+        goto cleanup;
+    }
+    else
+    {
+        ESP_LOGE(TAG, "Failed to get SSID size: %s", esp_err_to_name(err));
+        goto cleanup;
+    }
+
+    // Read the password from NVS
+    size_t required_size2;
+    err = nvs_get_str(my_handle, "pass", NULL, &required_size2);
+    if (err == ESP_OK && required_size2 <= pass_buf_len)
+    {
+        err = nvs_get_str(my_handle, "pass", *pass_buf, &required_size2);
+        if (err == ESP_OK)
+        {
+            ESP_LOGI(TAG, "Password retrieved from NVS");
+            toReturn = 0;
+        }
+        else
+        {
+            ESP_LOGE(TAG, "Failed to read password: %s", esp_err_to_name(err));
+            goto cleanup;
+        }
+    }
+    else if (err == ESP_ERR_NVS_NOT_FOUND)
+    {
+        ESP_LOGW(TAG, "Password not found in NVS");
+        toReturn = -1;
+        goto cleanup;
+    }
+    else
+    {
+        ESP_LOGE(TAG, "Failed to get password size: %s", esp_err_to_name(err));
+        goto cleanup;
+    }
+
+    // Read the device ID from NVS
+    size_t required_size3;
+    err = nvs_get_str(my_handle, "deviceid", NULL, &required_size3);
+    if (err == ESP_OK && required_size3 <= device_id_buf_len)
+    {
+        err = nvs_get_str(my_handle, "deviceid", *device_id_buf, &required_size3);
+        if (err == ESP_OK)
+        {
+            ESP_LOGI(TAG, "Device ID retrieved from NVS");
+            toReturn = 0;
+        }
+        else
+        {
+            ESP_LOGE(TAG, "Failed to read device ID: %s", esp_err_to_name(err));
+            goto cleanup;
+        }
+    }
+    else if (err == ESP_ERR_NVS_NOT_FOUND)
+    {
+        ESP_LOGW(TAG, "Device ID not found in NVS");
+        toReturn = -1;
+        goto cleanup;
+    }
+    else
+    {
+        ESP_LOGE(TAG, "Failed to get device ID size: %s", esp_err_to_name(err));
+        goto cleanup;
+    }
+
+cleanup:
+    nvs_close(my_handle);
+    return toReturn;
+}
+
+
+
 int get_auth_nvs(char **key_buf, size_t key_buf_len, char **cert_buf, size_t cert_buf_len)
 {
     int toReturn = 1; // 0 if success, -1 if not found, 1 if error
@@ -102,6 +207,48 @@ int get_auth_nvs(char **key_buf, size_t key_buf_len, char **cert_buf, size_t cer
 cleanup:
     nvs_close(my_handle);
     return toReturn;
+}
+
+esp_err_t set_device_creds_nvs()
+{
+    print_stack_size();
+    esp_err_t err;
+
+    nvs_handle_t my_handle;
+    err = nvs_open("device_creds", NVS_READWRITE, &my_handle);
+    if (err != ESP_OK)
+    {
+        ESP_LOGE(TAG, "Error (%s) opening NVS handle!\n", esp_err_to_name(err));
+        goto cleanup;
+    }
+    err = nvs_set_str(my_handle, "ssid", (char*)wifissid_start);
+    if (err != ESP_OK)
+    {
+        ESP_LOGE(TAG, "Failed to write wifissid key to NVS");
+        goto cleanup;
+    }
+    err = nvs_set_str(my_handle, "pass", (char*)wifipass_start);
+    if (err != ESP_OK)
+    {
+        ESP_LOGE(TAG, "Failed to write wifi pass to NVS");
+        goto cleanup;
+    }
+    err = nvs_set_str(my_handle, "deviceid", (char*)deviceid_start);
+    if (err != ESP_OK)
+    {
+        ESP_LOGE(TAG, "Failed to write deviceid to NVS");
+        goto cleanup;
+    }
+    err = nvs_commit(my_handle);
+    if (err != ESP_OK)
+    {
+        ESP_LOGE(TAG, "Error (%s) committing updates to NVS!\n", esp_err_to_name(err));
+        goto cleanup;
+    }
+
+cleanup:
+    nvs_close(my_handle);
+    return err;
 }
 
 esp_err_t set_auth_nvs(char *cert_buf, char *key_buf)

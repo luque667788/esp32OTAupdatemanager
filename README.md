@@ -13,6 +13,8 @@ Please before running or testing the code make sure to change the wifi credentia
 
 Make sure to check out the configuration section of this README before running the project.
 
+The Wi-Fi credentials and device ID are stored in the NVS during the first boot, using the values from the `envdata` folder. On subsequent boots, the program retrieves these credentials and device ID from the NVS. If a third-party program modifies the `device_creds` namespace in the NVS, changing the `ssid`, `pass`, or `deviceid` fields, the program will use the updated values from the NVS.
+
 
 
 ## Main Functionalities
@@ -79,13 +81,14 @@ sdkconfig.old
 - Ensure that ESP-IDF is installed on your system. Follow the ESP-IDF setup guide for installation instructions.
 
 ### Configuration
-- Wi-Fi Credentials: Set up your Wi-Fi credentials in the `main/lib/wifi.h` file.
+- Wi-Fi Credentials: Set up your Wi-Fi credentials in the `envdata` folder in their the respective ssid and pass files.
 - URLs: Configure the server URLs in the `main/lib/https.h` file.
-- DeviceId: Configure the deviceId in the `main/lib/https.h` file.
+- DeviceId: Configure the deviceId in the `envdata` folder in the `deviceid` file.
 
 - Menuconfig: Access `idf.py menuconfig` and ensure that the "Enable rollback" option is already enabled in the bootloader options.
 - Menuconfig: Ensure your partition settings in `idf.py` are configured for "Custom partition table CSV" (make sure to also configure the size of the ota_1 partition according to your specific resources of the esp32 flash).
 - Menuconfig: Navigate to `Component config -> ESP system settings -> Main task stack size` and set it to 7170. If your specific ESP32 version does not support this value, you may set it to a lower value, such as approximately 5000.
+- If you are not using the same exact project as me, and just copying and pasting the code files, remember to make sure that the CMake file is equal as in this project also.
 
 ### Build and Flash
 1. Open a terminal and navigate to the project directory.
@@ -100,8 +103,8 @@ idf.py flash monitor //(requires the ESP32 to be connected via USB to the comput
 The project incorporates robust error-handling mechanisms to ensure system stability. In the event of a critical error, the system will automatically restart to attempt recovery. These error-handling mechanisms can be easily customized as most functionalities are abstracted into separate files.
 
 ### Additional Notes
-- The Wi-Fi keys, URLs, and deviceId are currently hard-coded for development purposes. If necessary, these can be stored in the NVS.
 - If you have any questions or suggestions for alternative approaches for specific points, please don't hesitate to reach out.
 
 ## Contact 
 Email: luquemendonca@gmail.com
+Open for werkstudent and internships opportunities. 

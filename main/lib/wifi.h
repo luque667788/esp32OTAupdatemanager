@@ -19,20 +19,24 @@
 /**** CONFIGURATION ****/
 
 //for normal wifi networks
-#define WIFI_SSID "yourwifissid"
-#define WIFI_PASS "yourwifipassword"
+//#define WIFI_SSID "yourwifissid"
+//#define WIFI_PASS "yourwifipassword"
 #define WIFI_MAXIMUM_RETRY 5
+#define WIFI_KEY_SIZE 32
+
+
 
 
 
 
 // if using enterprise wifi network-> (for example eduroam) uncomment the following lines
+/*
 #define USEEAP
-#define EAP_SSID "eduroam"
-#define EAP_ID "ls-246123@rwu.de"
-#define EAP_USERNAME "ls-246123@rwu.de"
-#define EAP_PASSWORD "Zvv5N5g6"
-
+#define EAP_SSID ""
+#define EAP_ID ""
+#define EAP_USERNAME ""
+#define EAP_PASSWORD ""
+*/
 
 /****               ****/
 
@@ -40,7 +44,7 @@
 
 // Function to initialize the wifi and sets to station mode
 // This function should be called before any other wifi function
-void wifi_init_sta(void);
+void wifi_init_sta(char* wifissid_start, char* wifipass_start);
 
 static void event_handler(void *arg, esp_event_base_t event_base,
                           int32_t event_id, void *event_data);

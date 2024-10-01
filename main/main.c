@@ -17,6 +17,8 @@
 #include "lib/ota.h"
 #include "lib/https.h"
 
+#define DEVICE_ID_SIZE 25
+
 const char *TAG = "OTA_UPDATER";
 
 void app_main(void)
@@ -33,8 +35,44 @@ void app_main(void)
     }
 
     init_nvs();
-    wifi_init_sta();
+    char *ssid_buf = malloc(WIFI_KEY_SIZE);
+    char *pass_buf = malloc(WIFI_KEY_SIZE);
+    char *device_id_buf = malloc(DEVICE_ID_SIZE);
+    int found_wifi_flag = get_wifi_id_nvs(&ssid_buf, WIFI_KEY_SIZE, &pass_buf, WIFI_KEY_SIZE, &device_id_buf, DEVICE_ID_SIZE);
+    if (found_wifi_flag == 0)
+    {
+        ESP_LOGW(TAG, "WiFi credentials found in NVS");
+        ESP_LOGI(TAG, "SSID: %s", ssid_buf);
+        ESP_LOGI(TAG, "Password: %s", pass_buf);
+        ESP_LOGI(TAG, "Device ID: %s", device_id_buf);
+    }
+    else if (found_wifi_flag == -1)
+    {
+        ESP_LOGW(TAG, "WiFi credentials NOT found in NVS");
+        ESP_LOGW(TAG, "Will set the device credentials for the first time in NVS");
+        set_device_creds_nvs();
+        int found_wifi_flag = get_wifi_id_nvs(&ssid_buf, WIFI_KEY_SIZE, &pass_buf, WIFI_KEY_SIZE, &device_id_buf, DEVICE_ID_SIZE);
+        if (found_wifi_flag != 0)
+        {
+            ESP_LOGE(TAG, "Failed to get credentials from NVS after just setting them");
+            task_fatal_error();
+        }
+        ESP_LOGW(TAG, "WiFi credentials found in NVS (we have just set them,this is first boot)");
+        ESP_LOGI(TAG, "SSID: %s", ssid_buf);
+        ESP_LOGI(TAG, "Password: %s", pass_buf);
+        ESP_LOGI(TAG, "Device ID: %s", device_id_buf);
 
+    }
+    else
+    {
+        ESP_LOGE(TAG, "Failed to get WiFi credentials from NVS");
+        // unrecoverable error, restart the esp32
+        task_fatal_error();
+    }
+
+    wifi_init_sta(ssid_buf, pass_buf);
+    free(ssid_buf);
+    free(pass_buf);
     print_stack_size();
     // 
     // for retriving auth data from nvs we need to allocate memory for the buffers first
@@ -70,7 +108,7 @@ void app_main(void)
 
         ESP_LOGI(TAG, "Sucessfully generated csr and priv key key!");
 
-        err = send_csr(csr_buf, &cert_buf);
+        err = send_csr(csr_buf, &cert_buf, device_id_buf);
         if (err != ESP_OK)
         {
             ESP_LOGE(TAG, "Failed to send csr to server and get cert, %s", esp_err_to_name(err));
@@ -78,6 +116,7 @@ void app_main(void)
             task_fatal_error();
         }
         free(csr_buf);
+        free(device_id_buf);
         ESP_LOGI(TAG, "Successfully got certificate from server with csr");
         err = set_auth_nvs(cert_buf, key_buf);
         if (err != ESP_OK)
